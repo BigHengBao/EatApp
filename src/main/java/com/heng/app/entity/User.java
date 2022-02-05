@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
  * Editor: hengBao
  * Wechat：zh17530588817
  * date: 2022/2/5/22:35
+ * title: 用户类
  */
 @Data
 @NoArgsConstructor
