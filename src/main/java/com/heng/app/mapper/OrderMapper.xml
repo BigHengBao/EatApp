@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heng.app.mapper.OrderMapper">
+    <!--实体类与数据库映射字段部分-->
+    <resultMap id="ResultOrder" type="com.heng.app.entity.Order">
+        <result property="id" column="order_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="total" column="total" jdbcType="DOUBLE"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="createdTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="finishedTime" column="finish_time" jdbcType="TIMESTAMP"/>
+        <result property="okTime" column="ok_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 声明数据库字段 -->
+    <sql id="order_field">
+        order_id
+        ,user_id,total,status,create_time,finish_time,ok_time
+    </sql>
+
+    <!-- 实体类属性-->
+    <sql id="order_insert">
+        #{id}
+        ,
+        #{userId},
+        #{total},
+        #{status},
+        #{createdTime},
+        #{finishedTime},
+        #{okTime}
+    </sql>
+
+    <!-- 更新结果  -->
+    <sql id="order_update">
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="createdTime != null">
+            create_time = #{createdTime},
+        </if>
+        <if test="finishedTime != null">
+            finish_time = #{finishedTime},
+        </if>
+        <if test="okTime != null">
+            ok_time = #{okTime},
+        </if>
+    </sql>
+
+
+    <!-- 查询时条件   -->
+    <sql id="order_where">
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.heng.app.entity.Order">
+        insert into user_order
+        <include refid="order_field"/>
+        ) values(
+        <include refid="order_insert"/>
+        )
+    </insert>
+
+    <!-- 更新一个实体 -->
+    <update id="update" parameterType="com.heng.app.entity.Order">
+        update user_order
+        <set>
+            <include refid="order_update"/>
+        </set>
+        where 1=1
+        <include refid="order_where"/>
+    </update>
+
+    <!-- 根据参数查询-->
+    <select id="listByMap" resultMap="ResultOrder" parameterType="map">
+        select
+        <include refid="order_field"/>
+        from user_order where 1=1
+        <include refid="order_where"/>
+    </select>
+
+    <!-- 查询整个表 -->
+    <select id="listAll" resultMap="ResultOrder">
+        select
+        <include refid="order_field"/>
+        from user_order
+    </select>
+</mapper>

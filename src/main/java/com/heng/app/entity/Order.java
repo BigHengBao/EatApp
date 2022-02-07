@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
+    private Integer id;
     private Integer userId;
     private Double total;
     private Integer status;

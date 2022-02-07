@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProType {
+    private Integer id;
     private String typeName;
     private Integer typeNumber;
     private String typeImage;

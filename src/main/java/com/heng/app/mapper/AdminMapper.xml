@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heng.app.mapper.AdminMapper">
+    <!--实体类与数据库映射字段部分-->
+    <resultMap id="ResultAdmin" type="com.heng.app.entity.Admin">
+        <result property="id" column="admin_id" jdbcType="INTEGER"/>
+        <result property="adminAccount" column="admin_account" jdbcType="VARCHAR"/>
+        <result property="adminPwd" column="admin_password" jdbcType="VARCHAR"/>
+        <result property="adminRealName" column="admin_real_name" jdbcType="VARCHAR"/>
+        <result property="adminSex" column="admin_sex" jdbcType="INTEGER"/>
+        <result property="adminPhone" column="admin_phone" jdbcType="VARCHAR"/>
+        <result property="adminAddress" column="admin_address" jdbcType="VARCHAR"/>
+        <result property="active" column="active" jdbcType="INTEGER"/>
+        <result property="adminLevel" column="admin_level" jdbcType="INTEGER"/>
+        <result property="adminImage" column="admin_image" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 声明数据库字段 -->
+    <sql id="admin_field">
+        admin_id
+        ,admin_account,admin_password,admin_real_name,admin_sex,
+        admin_phone,admin_address,active,admin_level,admin_image
+    </sql>
+
+    <!-- 实体类属性-->
+    <sql id="admin_insert">
+        #{id}
+        ,
+        #{adminAccount},
+        #{adminPwd},
+        #{adminRealName},
+        #{adminSex},
+        #{adminPhone},
+        #{adminAddress},
+        #{active},
+        #{adminLevel},
+        #{adminImage}
+    </sql>
+
+    <!-- 更新结果  -->
+    <sql id="admin_update">
+        <if test="adminAccount != null">
+            admin_account = #{adminAccount},
+        </if>
+        <if test="adminPwd != null">
+            admin_password = #{adminPwd},
+        </if>
+        <if test="adminRealName != null">
+            admin_real_name = #{adminRealName},
+        </if>
+        <if test="adminSex != null">
+            admin_sex = #{adminSex},
+        </if>
+        <if test="adminPhone != null">
+            admin_phone = #{adminPhone},
+        </if>
+        <if test="adminAddress != null">
+            admin_address = #{adminAddress},
+        </if>
+        <if test="adminLevel != null">
+            admin_level = #{adminLevel},
+        </if>
+        <if test="adminImage != null">
+            admin_image = #{adminImage},
+        </if>
+        <if test="active != null">
+            active = #{active}
+        </if>
+
+    </sql>
+
+    <!-- 查询时条件   -->
+    <sql id="admin_where">
+        <if test="id != null">
+            and admin_id = #{id}
+        </if>
+        <if test="adminAccount != null">
+            and admin_account = #{adminAccount}
+        </if>
+        <if test="adminSex != null">
+            and admin_sex = #{adminSex}
+        </if>
+        <if test="adminPhone != null">
+            and admin_phone = #{adminPhone},
+        </if>
+        <if test="adminLevel != null">
+            and admin_level = #{adminLevel},
+        </if>
+        <if test="active != null">
+            and active = #{active}
+        </if>
+    </sql>
+
+    <!--    新增        -->
+    <!--    参数：实体类-->
+    <!--    返回：主键 -->
+    <insert id="insert" parameterType="com.heng.app.entity.Admin">
+        insert into my_admin(
+        <include refid="admin_field"/>
+        ) values(
+        <include refid="admin_insert"/>
+        )
+    </insert>
+
+
+    <!-- 根据实体主键删除一个实体-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete
+        from my_admin
+        where admin_id = #{id}
+    </delete>
+
+    <!-- 通过实体删除-->
+    <delete id="deleteByEntity" parameterType="com.heng.app.entity.Admin">
+        delete from my_admin where 1=1
+        <include refid="admin_where"/>
+    </delete>
+
+    <!-- 通过map删除 -->
+    <delete id="deleteByMap" parameterType="java.util.HashMap">
+        delete from my_admin where 1=1
+        <include refid="admin_where"/>
+    </delete>
+
+    <!-- 更新一个实体 -->
+    <update id="update" parameterType="com.heng.app.entity.Admin">
+        update my_admin
+        <set>
+            <include refid="admin_update"/>
+        </set>
+        where 1=1
+        <include refid="admin_where"/>
+    </update>
+
+    <!-- 通过id进行修改-->
+    <update id="updateById" parameterType="com.heng.app.entity.Admin">
+        update my_admin
+        <set>
+            <include refid="admin_update"/>
+        </set>
+        where admin_id=#{id}
+    </update>
+
+    <!-- 根据参数查询-->
+    <select id="listByMap" resultMap="ResultAdmin" parameterType="map">
+        select
+        <include refid="admin_field"/>
+        from my_admin where 1=1
+        <include refid="admin_where"/>
+    </select>
+
+    <!-- 查询整个表 -->
+    <select id="listAll" resultMap="ResultAdmin">
+        select
+        <include refid="admin_field"/>
+        from my_admin
+    </select>
+
+    <!-- 查询所有实体,根据实体属性值为判断条件查询所有实体-->
+    <select id="listAllByEntity" resultMap="ResultAdmin" parameterType="com.heng.app.entity.Admin">
+        select
+        <include refid="admin_field"/>
+        from my_admin where 1=1
+        <include refid="admin_where"/>
+    </select>
+
+    <!-- 根据主键获取一个实体-->
+    <select id="load" resultMap="ResultAdmin" parameterType="java.lang.Integer">
+        select
+        <include refid="admin_field"/>
+        from my_admin where admin_id=#{id}
+    </select>
+    <!-- 根据主键获取一个实体-->
+    <select id="getById" resultMap="ResultAdmin" parameterType="java.lang.Integer">
+        select
+        <include refid="admin_field"/>
+        from my_admin where admin_id=#{id}
+    </select>
+
+    <!-- 通过map查询-->
+    <select id="getByMap" resultMap="ResultAdmin" parameterType="map">
+        select
+        <include refid="admin_field"/>
+        from my_admin where 1=1
+        <include refid="admin_where"/>
+    </select>
+
+    <!--通过对象查询-不分页-->
+    <select id="getByEntity" resultMap="ResultAdmin" parameterType="com.heng.app.entity.admin">
+        select
+        <include refid="admin_field"/>
+        from my_admin where 1=1
+        <include refid="admin_where"/>
+    </select>
+
+    <!-- 通过map查询分页-->
+    <select id="findByMap" resultMap="ResultAdmin" parameterType="map">
+        select
+        <include refid="admin_field"/>
+        from my_admin where 1=1
+        <include refid="admin_where"/>
+    </select>
+
+    <!--通过对象查询分页-->
+    <select id="findByEntity" resultMap="ResultAdmin" parameterType="com.heng.app.entity.admin">
+        select
+        <include refid="admin_field"/>
+        from my_admin where 1=1
+        <include refid="admin_where"/>
+    </select>
+
+</mapper>

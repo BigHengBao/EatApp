@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heng.app.mapper.ProTypeMapper">
+
+    <!--实体类与数据库映射字段部分-->
+    <resultMap id="ResultProType" type="com.heng.app.entity.ProType">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="typeName" column="type_name" jdbcType="VARCHAR"/>
+        <result property="typeNumber" column="type_num" jdbcType="INTEGER"/>
+        <result property="typeImage" column="type_image" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 声明数据库字段 -->
+    <sql id="product_type_field">
+        id
+        ,type_name,type_num,type_image
+    </sql>
+
+    <!-- 实体类属性-->
+    <sql id="product_type_insert">
+        #{id}
+        ,
+        #{typeName},
+        #{typeNumber},
+        #{typeImage}
+    </sql>
+
+
+    <!-- 更新结果  -->
+    <sql id="product_type_update">
+        <if test="typeNumber != null">
+            type_num = #{typeNumber},
+        </if>
+    </sql>
+
+
+    <!-- 查询时条件   -->
+    <sql id="product_type_where">
+        <if test="typeName != null">
+            and type_name = #{typeName}
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.heng.app.entity.ProType">
+        insert into product_type
+        <include refid="product_type_field"/>
+        ) values(
+        <include refid="product_type_insert"/>
+        )
+    </insert>
+
+    <!-- 更新一个实体 -->
+    <update id="update" parameterType="com.heng.app.entity.ProType">
+        update product_type
+        <set>
+            <include refid="product_type_update"/>
+        </set>
+        where 1=1
+        <include refid="product_type_where"/>
+    </update>
+
+    <!-- 根据参数查询-->
+    <select id="listByMap" resultMap="ResultProduct" parameterType="map">
+        select
+        <include refid="product_type_field"/>
+        from product_type where 1=1
+        <include refid="product_type_where"/>
+    </select>
+
+    <!-- 查询整个表 -->
+    <select id="listAll" resultMap="ResultProduct">
+        select
+        <include refid="product_type_field"/>
+        from product_type
+    </select>
+
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heng.app.mapper.OrderDetailMapper">
+
+    <!--实体类与数据库映射字段部分-->
+    <resultMap id="ResultOrderDetail" type="com.heng.app.entity.OrderDetail">
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="pId" column="product_id" jdbcType="INTEGER"/>
+        <result property="pNumber" column="product_num" jdbcType="INTEGER"/>
+        <result property="price" column="price" jdbcType="DOUBLE"/>
+        <result property="total" column="total" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <!-- 声明数据库字段 -->
+    <sql id="orderDetail_field">
+        order_id
+        ,product_id,product_num,price,total
+    </sql>
+
+    <!-- 实体类属性-->
+    <sql id="orderDetail_insert">
+        #{orderId}
+        ,
+        #{pId},
+        #{pNumber},
+        #{price},
+        #{total}
+    </sql>
+
+    <!-- 更新结果  -->
+    <sql id="orderDetail_update">
+
+    </sql>
+
+
+    <!-- 查询时条件   -->
+    <sql id="orderDetail_where">
+        <if test="pId != null">
+            and product_id = #{pId}
+        </if>
+
+    </sql>
+
+    <insert id="insert" parameterType="com.heng.app.entity.OrderDetail">
+        insert into user_order_detail
+        <include refid="orderDetail_field"/>
+        ) values(
+        <include refid="orderDetail_insert"/>
+        )
+    </insert>
+
+    <!-- 更新一个实体 -->
+    <update id="update" parameterType="com.heng.app.entity.OrderDetail">
+        update user_order_detail
+        <set>
+            <include refid="orderDetail_update"/>
+        </set>
+        where 1=1
+        <include refid="orderDetail_where"/>
+    </update>
+
+    <!-- 根据参数查询-->
+    <select id="listByMap" resultMap="ResultOrderDetail" parameterType="map">
+        select
+        <include refid="orderDetail_field"/>
+        from user_order_detail where 1=1
+        <include refid="orderDetail_where"/>
+    </select>
+
+    <!-- 查询整个表 -->
+    <select id="listAll" resultMap="ResultOrderDetail">
+        select
+        <include refid="orderDetail_field"/>
+        from user_order_detail
+    </select>
+
+
+</mapper>

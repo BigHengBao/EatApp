@@ -16,7 +16,9 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Collection {
+    private Integer id;
     private Integer pId;
     private Integer userId;
     private Timestamp addTime;
+    private Integer active;
 }

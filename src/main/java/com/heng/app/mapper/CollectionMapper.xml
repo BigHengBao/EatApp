@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heng.app.mapper.CollectionMapper">
+    <!--实体类与数据库映射字段部分-->
+    <resultMap id="ResultCollection" type="com.heng.app.entity.Collection">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="pId" column="product_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="addTime" column="addtime" jdbcType="TIMESTAMP"/>
+        <result property="active" column="active" jdbcType="INTEGER"/>
+    </resultMap>
+    <!-- 声明数据库字段 -->
+    <sql id="collection_field">
+        id
+        ,product_id,user_id,addtime,active
+    </sql>
+
+    <!-- 实体类属性-->
+    <sql id="collection_insert">
+        #{id}
+        ,
+        #{pId},
+        #{userId},
+        #{addTime},
+        #{active}
+    </sql>
+
+    <!-- 更新结果  -->
+    <sql id="collection_update">
+        <if test="active != null">
+            active = #{active},
+        </if>
+        <if test="addTime != null">
+            addtime = #{addTime},
+        </if>
+    </sql>
+
+
+    <!-- 查询时条件   -->
+    <sql id="collection_where">
+        <if test="pId != null">
+            and product_id = #{pId}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
+        <if test="addTime != null">
+            and addtime = #{addTime}
+        </if>
+        <if test="active != null">
+            and active = #{active}
+        </if>
+
+    </sql>
+
+    <insert id="insert" parameterType="com.heng.app.entity.Collection">
+        insert into collection
+        <include refid="collection_field"/>
+        ) values(
+        <include refid="collection_insert"/>
+        )
+    </insert>
+
+    <!-- 更新一个实体 -->
+    <update id="update" parameterType="com.heng.app.entity.Collection">
+        update collection
+        <set>
+            <include refid="collection_update"/>
+        </set>
+        where 1=1
+        <include refid="collection_where"/>
+    </update>
+
+    <!-- 根据参数查询-->
+    <select id="listByMap" resultMap="ResultCollection" parameterType="map">
+        select
+        <include refid="collection_field"/>
+        from collection where 1=1
+        <include refid="collection_where"/>
+    </select>
+
+    <!-- 查询整个表 -->
+    <select id="listAll" resultMap="ResultCollection">
+        select
+        <include refid="collection_field"/>
+        from collection
+    </select>
+
+
+</mapper>

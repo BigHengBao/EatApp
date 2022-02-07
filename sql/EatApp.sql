@@ -4,19 +4,19 @@
 CREATE DATABASE IF NOT EXISTS eatapp DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
 -- 2.1、用户表
-CREATE TABLE IF NOT EXISTS `my_user`(
-   `user_id` INT UNSIGNED AUTO_INCREMENT,
-   `user_account` VARCHAR(10) NOT NULL,
-   `user_password` VARCHAR(20) NOT NULL,
-   `user_real_name` VARCHAR(20) NOT NULL,
-   `user_sex` INT NOT NULL,
-   `user_phone` VARCHAR(20) NOT NULL,
-   `user_address` VARCHAR(50) ,
+CREATE TABLE IF NOT EXISTS `my_admin`(
+   `admin_id` INT UNSIGNED AUTO_INCREMENT,
+   `admin_account` VARCHAR(10) NOT NULL,
+   `admin_password` VARCHAR(20) NOT NULL,
+   `admin_real_name` VARCHAR(20) NOT NULL,
+   `admin_sex` INT NOT NULL,
+   `admin_phone` VARCHAR(20) NOT NULL,
+   `admin_address` VARCHAR(50) ,
    `active` INT NOT NULL,
-   `user_level` INT NOT NULL,
-   `user_image` VARCHAR(80) NOT NULL,
-   `user_write` VARCHAR(30),
-   PRIMARY KEY ( `user_id` )
+   `admin_level` INT NOT NULL,
+   `admin_image` VARCHAR(80) NOT NULL,
+   `admin_write` VARCHAR(30),
+   PRIMARY KEY ( `admin_id` )
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --  2.2、管理员表
@@ -49,9 +49,9 @@ CREATE TABLE IF NOT EXISTS `product`(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 2.4、用户订单表
-CREATE TABLE IF NOT EXISTS `user_order`(
+CREATE TABLE IF NOT EXISTS `admin_order`(
    `order_id` INT UNSIGNED AUTO_INCREMENT,
-   `user_id` INT NOT NULL,
+   `admin_id` INT NOT NULL,
    `total` DOUBLE NOT NULL,
    `status` INT NOT NULL,
    `create_time` TIMESTAMP NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `user_order`(
 -- 2.5、商品评论表
 CREATE TABLE IF NOT EXISTS `comments`(
    `comments_id` INT UNSIGNED AUTO_INCREMENT,
-   `user_id` INT NOT NULL,
+   `admin_id` INT NOT NULL,
    `content` VARCHAR(30) NOT NULL,
    `addtime` TIMESTAMP NOT NULL,
    `active` INT NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `comments`(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 2.6、订单细节表
-CREATE TABLE IF NOT EXISTS `user_order_detail`(
+CREATE TABLE IF NOT EXISTS `admin_order_detail`(
    `order_id` INT UNSIGNED AUTO_INCREMENT,
    `product_id` INT NOT NULL,
    `product_num` INT NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `user_order_detail`(
 CREATE TABLE IF NOT EXISTS `collection`(
    `id` INT UNSIGNED AUTO_INCREMENT,
    `product_id` INT NOT NULL,
-   `user_id` INT NOT NULL,
+   `admin_id` INT NOT NULL,
    `price` DOUBLE NOT NULL,
    `addtime` TIMESTAMP NOT NULL,
    PRIMARY KEY ( `id` )
@@ -101,11 +101,11 @@ CREATE TABLE IF NOT EXISTS `product_type`(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 3.1、设置每个表的id从一开始
-ALTER  TABLE  my_user auto_increment 1000; 
+ALTER  TABLE  my_admin auto_increment 1000;
 ALTER  TABLE  my_admin auto_increment 2000; 
 ALTER  TABLE  product auto_increment 3000; 
-ALTER  TABLE  user_order auto_increment 4000; 
+ALTER  TABLE  admin_order auto_increment 4000;
 ALTER  TABLE  comments auto_increment 5000; 
-ALTER  TABLE  user_order_detail auto_increment 6000; 
+ALTER  TABLE  admin_order_detail auto_increment 6000;
 ALTER  TABLE  collection auto_increment 7000; 
 ALTER  TABLE  product_type auto_increment 8000; 

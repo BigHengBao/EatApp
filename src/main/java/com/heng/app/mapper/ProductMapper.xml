@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heng.app.mapper.ProductMapper">
+    <!--实体类与数据库映射字段部分-->
+    <resultMap id="ResultProduct" type="com.heng.app.entity.Product">
+        <result property="id" column="product_id" jdbcType="INTEGER"/>
+        <result property="pName" column="product_name" jdbcType="VARCHAR"/>
+        <result property="price" column="product_price" jdbcType="DOUBLE"/>
+        <result property="discount" column="discount" jdbcType="DOUBLE"/>
+        <result property="size" column="size" jdbcType="INTEGER"/>
+        <result property="taste" column="taste" jdbcType="VARCHAR"/>
+        <result property="pImage" column="product_image" jdbcType="VARCHAR"/>
+        <result property="material" column="material" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 声明数据库字段 -->
+    <sql id="product_field">
+        product_id
+        ,product_name,product_price,discount,`size`,taste,product_image,`type`,material
+    </sql>
+
+    <!-- 实体类属性-->
+    <sql id="product_insert">
+        #{id}
+        ,
+        #{pName},
+        #{price},
+        #{discount},
+        #{size},
+        #{taste},
+        #{pImage},
+        #{material}
+    </sql>
+
+    <!-- 更新结果  -->
+    <sql id="product_update">
+        <if test="pName != null">
+            product_name = #{pName},
+        </if>
+        <if test="price != null">
+            product_price = #{price},
+        </if>
+        <if test="discount != null">
+            discount = #{discount},
+        </if>
+        <if test="pImage != null">
+            product_image = #{pImage},
+        </if>
+        <if test="material != null">
+            material = #{material},
+        </if>
+    </sql>
+
+
+    <!-- 查询时条件   -->
+    <sql id="product_where">
+        <if test="id != null">
+            and product_id = #{id}
+        </if>
+        <if test="pName != null">
+            and product_name = #{pName}
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.heng.app.entity.Product">
+        insert into product
+        <include refid="product_field"/>
+        ) values(
+        <include refid="product_insert"/>
+        )
+    </insert>
+
+    <!-- 更新一个实体 -->
+    <update id="update" parameterType="com.heng.app.entity.Product">
+        update product
+        <set>
+            <include refid="product_update"/>
+        </set>
+        where 1=1
+        <include refid="product_where"/>
+    </update>
+
+    <!-- 根据参数查询-->
+    <select id="listByMap" resultMap="ResultProduct" parameterType="map">
+        select
+        <include refid="product_field"/>
+        from product where 1=1
+        <include refid="product_where"/>
+    </select>
+
+    <!-- 查询整个表 -->
+    <select id="listAll" resultMap="ResultProduct">
+        select
+        <include refid="product_field"/>
+        from product
+    </select>
+</mapper>

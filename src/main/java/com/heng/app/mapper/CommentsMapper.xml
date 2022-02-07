@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heng.app.mapper.CommentsMapper">
+    <resultMap id="ResultComments" type="com.heng.app.entity.Comments">
+        <result property="id" column="comments_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="INTEGER"/>
+        <result property="addTime" column="addtime" jdbcType="TIMESTAMP"/>
+        <result property="active" column="active" jdbcType="INTEGER"/>
+        <result property="pId" column="product_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 声明数据库字段 -->
+    <sql id="comments_field">
+        comments_id
+        ,user_id,content,addtime,active,product_id
+    </sql>
+
+    <!-- 实体类属性-->
+    <sql id="comments_insert">
+        #{id}
+        ,
+        #{userId},
+        #{content},
+        #{addTime},
+        #{active},
+        #{pId}
+    </sql>
+
+    <!-- 更新结果  -->
+    <sql id="comments_update">
+        <if test="active != null">
+            active = #{active},
+        </if>
+        <if test="addTime != null">
+            addtime = #{addTime},
+        </if>
+    </sql>
+
+
+    <!-- 查询时条件   -->
+    <sql id="comments_where">
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
+        <if test="active != null">
+            and active = #{active}
+        </if>
+        <if test="pId != null">
+            and product_id = #{pId}
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.heng.app.entity.Comments">
+        insert into comments
+        <include refid="comments_field"/>
+        ) values(
+        <include refid="comments_insert"/>
+        )
+    </insert>
+
+    <!-- 更新一个实体 -->
+    <update id="update" parameterType="com.heng.app.entity.Comments">
+        update comments
+        <set>
+            <include refid="comments_update"/>
+        </set>
+        where 1=1
+        <include refid="comments_where"/>
+    </update>
+
+    <!-- 根据参数查询-->
+    <select id="listByMap" resultMap="ResultComments" parameterType="map">
+        select
+        <include refid="comments_field"/>
+        from comments where 1=1
+        <include refid="comments_where"/>
+    </select>
+
+    <!-- 查询整个表 -->
+    <select id="listAll" resultMap="ResultComments">
+        select
+        <include refid="comments_field"/>
+        from comments
+    </select>
+
+
+</mapper>

@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Data
 public class Comments {
+    private Integer id;
     private Integer userId;
     private String content;
     private Timestamp addTime;

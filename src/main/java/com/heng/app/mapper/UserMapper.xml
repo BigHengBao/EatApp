@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heng.app.mapper.adminMapper">
+    <!--实体类与数据库映射字段部分-->
+    <resultMap id="ResultUser" type="com.heng.app.entity.User">
+        <result property="id" column="user_id" jdbcType="INTEGER"/>
+        <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
+        <result property="userPwd" column="user_password" jdbcType="VARCHAR"/>
+        <result property="userRealName" column="user_real_name" jdbcType="VARCHAR"/>
+        <result property="userSex" column="user_sex" jdbcType="INTEGER"/>
+        <result property="userPhone" column="user_phone" jdbcType="VARCHAR"/>
+        <result property="userAddress" column="user_address" jdbcType="VARCHAR"/>
+        <result property="active" column="active" jdbcType="INTEGER"/>
+        <result property="userLevel" column="user_level" jdbcType="INTEGER"/>
+        <result property="userImage" column="user_image" jdbcType="VARCHAR"/>
+        <result property="userWrite" column="user_write" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 声明数据库字段 -->
+    <sql id="user_field">
+        user_id
+        ,user_account,user_password,user_real_name,user_sex,
+        user_phone,user_address,active,user_level,user_image,user_write
+    </sql>
+
+    <!-- 实体类属性-->
+    <sql id="user_insert">
+        #{id}
+        ,
+        #{userAccount},
+        #{userPwd},
+        #{userRealName},
+        #{userSex},
+        #{userPhone},
+        #{userAddress},
+        #{active},
+        #{userLevel},
+        #{userImage},
+        #{userWrite}
+    </sql>
+
+    <!-- 更新结果  -->
+    <sql id="user_update">
+        <if test="userAccount != null">
+            user_account = #{userAccount},
+        </if>
+        <if test="userPwd != null">
+            user_password = #{userPwd},
+        </if>
+        <if test="userRealName != null">
+            user_real_name = #{userRealName},
+        </if>
+        <if test="userSex != null">
+            user_sex = #{userSex},
+        </if>
+        <if test="userPhone != null">
+            user_phone = #{userPhone},
+        </if>
+        <if test="userAddress != null">
+            user_address = #{userAddress},
+        </if>
+        <if test="userLevel != null">
+            user_level = #{userLevel},
+        </if>
+        <if test="userImage != null">
+            user_image = #{userImage},
+        </if>
+        <if test="userWrite != null">
+            user_write = #{userWrite},
+        </if>
+        <if test="active != null">
+            active = #{active}
+        </if>
+
+    </sql>
+
+    <!-- 查询时条件   -->
+    <sql id="user_where">
+        <if test="id != null">
+            and user_id = #{id}
+        </if>
+        <if test="userAccount != null">
+            and user_account = #{userAccount}
+        </if>
+        <if test="userSex != null">
+            and user_sex = #{userSex}
+        </if>
+        <if test="userPhone != null">
+            and user_phone = #{userPhone},
+        </if>
+        <if test="userLevel != null">
+            and user_level = #{userLevel},
+        </if>
+        <if test="active != null">
+            and active = #{active}
+        </if>
+    </sql>
+
+    <!--    新增        -->
+    <!--    参数：实体类-->
+    <!--    返回：主键 -->
+    <insert id="insert" parameterType="com.heng.app.entity.User">
+        insert into my_user(
+        <include refid="user_field"/>
+        ) values(
+        <include refid="user_insert"/>
+        )
+    </insert>
+
+
+    <!-- 根据实体主键删除一个实体-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete
+        from my_user
+        where user_id = #{id}
+    </delete>
+
+    <!-- 通过实体删除-->
+    <delete id="deleteByEntity" parameterType="com.heng.app.entity.User">
+        delete from my_user where 1=1
+        <include refid="user_where"/>
+    </delete>
+
+    <!-- 通过map删除 -->
+    <delete id="deleteByMap" parameterType="java.util.HashMap">
+        delete from my_user where 1=1
+        <include refid="user_where"/>
+    </delete>
+
+    <!-- 更新一个实体 -->
+    <update id="update" parameterType="com.heng.app.entity.User">
+        update my_user
+        <set>
+            <include refid="user_update"/>
+        </set>
+        where 1=1
+        <include refid="user_where"/>
+    </update>
+
+    <!-- 通过id进行修改-->
+    <update id="updateById" parameterType="com.heng.app.entity.User">
+        update my_user
+        <set>
+            <include refid="user_update"/>
+        </set>
+        where user_id=#{id}
+    </update>
+
+    <!-- 根据参数查询-->
+    <select id="listByMap" resultMap="ResultUser" parameterType="map">
+        select
+        <include refid="user_field"/>
+        from my_user where 1=1
+        <include refid="user_where"/>
+    </select>
+
+    <!-- 查询整个表 -->
+    <select id="listAll" resultMap="ResultUser">
+        select
+        <include refid="user_field"/>
+        from my_user
+    </select>
+
+    <!-- 查询所有实体,根据实体属性值为判断条件查询所有实体-->
+    <select id="listAllByEntity" resultMap="ResultUser" parameterType="com.heng.app.entity.User">
+        select
+        <include refid="user_field"/>
+        from my_user where 1=1
+        <include refid="user_where"/>
+    </select>
+
+    <!-- 根据主键获取一个实体-->
+    <select id="load" resultMap="ResultUser" parameterType="java.lang.Integer">
+        select
+        <include refid="admin_field"/>
+        from my_admin where admin_id=#{id}
+    </select>
+    <!-- 根据主键获取一个实体-->
+    <select id="getById" resultMap="ResultUser" parameterType="java.lang.Integer">
+        select
+        <include refid="admin_field"/>
+        from my_admin where admin_id=#{id}
+    </select>
+
+    <!-- 通过map查询-->
+    <select id="getByMap" resultMap="ResultUser" parameterType="map">
+        select
+        <include refid="admin_field"/>
+        from my_admin where 1=1
+        <include refid="admin_where"/>
+    </select>
+
+    <!--通过对象查询-不分页-->
+    <select id="getByEntity" resultMap="ResultUser" parameterType="com.heng.app.entity.User">
+        select
+        <include refid="admin_field"/>
+        from my_admin where 1=1
+        <include refid="admin_where"/>
+    </select>
+
+    <!-- 通过map查询分页-->
+    <select id="findByMap" resultMap="ResultUser" parameterType="map">
+        select
+        <include refid="admin_field"/>
+        from my_admin where 1=1
+        <include refid="admin_where"/>
+    </select>
+
+    <!--通过对象查询分页-->
+    <select id="findByEntity" resultMap="ResultUser" parameterType="com.heng.app.entity.User">
+        select
+        <include refid="admin_field"/>
+        from my_admin where 1=1
+        <include refid="admin_where"/>
+    </select>
+
+</mapper>
